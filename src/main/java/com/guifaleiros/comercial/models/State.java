@@ -12,7 +12,10 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Builder;
+
 @Entity
+@Builder
 public class State implements Serializable{
 	public List<City> getCities() {
 		return cities;
@@ -84,7 +87,5 @@ public class State implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
 	
 }
