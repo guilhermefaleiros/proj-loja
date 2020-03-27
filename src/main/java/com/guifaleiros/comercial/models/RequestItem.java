@@ -22,6 +22,10 @@ public class RequestItem implements Serializable {
 	public RequestItem() {
 		
 	}
+	
+	public double getSubTotal() {
+		return (price - discount) * quantity; 
+	}
 
 	public RequestItem(Request request, Product product, Double discount, Integer quantity, Double price) {
 		super();

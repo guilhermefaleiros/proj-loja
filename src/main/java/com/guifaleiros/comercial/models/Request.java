@@ -45,6 +45,14 @@ public class Request implements Serializable{
 	public Request() {
 		
 	}
+	
+	public double getTotalValue() {
+		double soma = 0;
+		for(RequestItem item : itens) {
+			soma += item.getSubTotal();
+		}
+		return soma;
+	}
 
 	public Integer getId() {
 		return id;
