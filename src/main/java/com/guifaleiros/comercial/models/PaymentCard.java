@@ -2,9 +2,11 @@ package com.guifaleiros.comercial.models;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.guifaleiros.comercial.models.enums.ETypePaymentState;
 
 @Entity
+@JsonTypeName("paymentCard")
 public class PaymentCard extends Payment {
 	private static final long serialVersionUID = 1L;
 

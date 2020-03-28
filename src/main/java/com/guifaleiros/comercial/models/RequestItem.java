@@ -36,6 +36,10 @@ public class RequestItem implements Serializable {
 		this.price = price;
 	}
 	
+	public void setRequest(Request request) {
+		id.setRequest(request);
+	}
+	
 	@JsonIgnore
 	public Request getRequest() {
 		return id.getRequest();
@@ -43,6 +47,10 @@ public class RequestItem implements Serializable {
 	
 	public Product getProduct() {
 		return id.getProduct();
+	}
+	
+	public void setProduct(Product product) {
+		id.setProduct(product);
 	}
 	
 	public RequestItemPK getId() {
