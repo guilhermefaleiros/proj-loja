@@ -10,6 +10,7 @@ import com.guifaleiros.comercial.models.PaymentSlip;
 import com.guifaleiros.comercial.models.Request;
 import com.guifaleiros.comercial.models.RequestItem;
 import com.guifaleiros.comercial.models.enums.ETypePaymentState;
+import com.guifaleiros.comercial.repositories.ClientRepository;
 import com.guifaleiros.comercial.repositories.PaymentRepository;
 import com.guifaleiros.comercial.repositories.ProductRepository;
 import com.guifaleiros.comercial.repositories.RequestItemRepository;
@@ -34,6 +35,9 @@ public class RequestService {
 	@Autowired
 	private RequestItemRepository requestItemRepository;
 	
+	@Autowired
+	private ClientRepository clientRepository;
+	
 	public Request find(Integer id){
 		Optional<Request> response = this.requestRepository.findById(id);
 		return response.orElseThrow(() -> new ObjectNotFoundException(
@@ -42,6 +46,7 @@ public class RequestService {
 	
 	public Request insert(Request obj) {
 		obj.setId(null);
+		obj.setClient(clientRepository.findById(obj.getClient().getId()).get());
 		obj.setInstant(new Date());
 		obj.getPayment().setState(ETypePaymentState.PENDING);
 		obj.getPayment().setRequest(obj);
@@ -55,10 +60,12 @@ public class RequestService {
 		
 		for(RequestItem ip : obj.getItens()) {
 			ip.setDiscount(0.0);
-			ip.setPrice(productRepository.findById(ip.getProduct().getId()).get().getPrice());
+			ip.setProduct(productRepository.findById(ip.getProduct().getId()).get());
+			ip.setPrice(ip.getProduct().getPrice());
 			ip.setRequest(obj);
 		}
 		this.requestItemRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
 		
 	}

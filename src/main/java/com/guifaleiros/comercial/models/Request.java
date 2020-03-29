@@ -1,8 +1,11 @@
 package com.guifaleiros.comercial.models;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -134,8 +137,28 @@ public class Request implements Serializable{
 	public void setItens(Set<RequestItem> itens) {
 		this.itens = itens;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido número: ");
+		builder.append(this.getId());
+		builder.append(", Instante: ");
+		builder.append(sdf.format(this.getInstant()));
+		builder.append(", Cliente: ");
+		builder.append(this.getClient().getName());
+		builder.append(", Situação do Pagamento: ");
+		builder.append(this.getPayment().getState().getDescription());
+		builder.append("\nDetalhes: \n");
+		for(RequestItem ip : this.getItens()) {
+			builder.append(ip.toString());
+		}
+		builder.append("Valor total: ");
+		builder.append(nf.format(this.getTotalValue()));
+		return builder.toString();
+	}
 	
 	
 }

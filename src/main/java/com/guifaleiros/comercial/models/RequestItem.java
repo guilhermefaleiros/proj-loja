@@ -1,6 +1,8 @@
 package com.guifaleiros.comercial.models;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -109,6 +111,22 @@ public class RequestItem implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getProduct().getName());
+		builder.append(", Qtd: ");
+		builder.append(this.getQuantity());
+		builder.append(", Preço Unitário: ");
+		builder.append(nf.format(this.getPrice()));
+		builder.append(", Subtotal: ");
+		builder.append(nf.format(this.getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
+	}
+	
 	
 	
 }
