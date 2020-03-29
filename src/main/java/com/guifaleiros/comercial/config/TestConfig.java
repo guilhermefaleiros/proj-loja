@@ -3,12 +3,13 @@ package com.guifaleiros.comercial.config;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.guifaleiros.comercial.services.DBService;
+import com.guifaleiros.comercial.services.EmailService;
+import com.guifaleiros.comercial.services.MockEmailService;
 
 @Configuration
 @Profile("test")
@@ -22,5 +23,10 @@ public class TestConfig {
 
 		dbService.instantiateTestDatabase();
 		return true;
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new MockEmailService();
 	}
 }

@@ -38,6 +38,9 @@ public class RequestService {
 	@Autowired
 	private ClientRepository clientRepository;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	public Request find(Integer id){
 		Optional<Request> response = this.requestRepository.findById(id);
 		return response.orElseThrow(() -> new ObjectNotFoundException(
@@ -65,7 +68,7 @@ public class RequestService {
 			ip.setRequest(obj);
 		}
 		this.requestItemRepository.saveAll(obj.getItens());
-		System.out.println(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 		
 	}
