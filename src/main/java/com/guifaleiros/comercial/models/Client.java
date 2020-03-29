@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.guifaleiros.comercial.models.enums.ETypeClient;
-import com.guifaleiros.comercial.services.validation.ClientUpdate;
 
 @Entity
 //@ClientUpdate
@@ -35,6 +34,9 @@ public class Client implements Serializable{
 	private String cpfOrCnpj;
 	private Integer type;
 	
+	@JsonIgnore
+	private String password;
+	
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	private List<Address> addresses = new ArrayList<>();
 	
@@ -50,13 +52,23 @@ public class Client implements Serializable{
 		
 	}
 
-	public Client(Integer id, String name, String email, String cpfOrCnpj, ETypeClient type) {
+	public Client(Integer id, String name, String email, String cpfOrCnpj, ETypeClient type, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.type = (type == null) ? null : type.getCod();
+		this.password = password;
+	}
+	
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Integer getId() {
