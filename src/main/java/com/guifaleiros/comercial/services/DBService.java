@@ -21,6 +21,7 @@ import com.guifaleiros.comercial.models.RequestItem;
 import com.guifaleiros.comercial.models.State;
 import com.guifaleiros.comercial.models.enums.ETypeClient;
 import com.guifaleiros.comercial.models.enums.ETypePaymentState;
+import com.guifaleiros.comercial.models.enums.ETypeProfile;
 import com.guifaleiros.comercial.repositories.AddressRepository;
 import com.guifaleiros.comercial.repositories.CategoryRepository;
 import com.guifaleiros.comercial.repositories.CityRepository;
@@ -113,15 +114,21 @@ public class DBService {
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Client cli1 = new Client(null, "Maria Silva", "Maria@gmail.com", "70876660103", ETypeClient.PESSOA_FISICA, pe.encode("123"));
+		Client cli2 = new Client(null, "Ana Silva", "ana@gmail.com", "70876660103", ETypeClient.PESSOA_FISICA, pe.encode("123"));
+		cli2.addProfile(ETypeProfile.ADMIN);
 		cli1.getPhones().addAll(Arrays.asList("982498044", "982018328"));
+		cli2.getPhones().addAll(Arrays.asList("982498044", "982018328"));
 		
 		Address a1 = new Address(null, "Rua Flores", "300", "Apto 303", "Jardim", "74360060", cli1, c1);
 		Address a2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "74360061", cli1, c2);
+		Address a3 = new Address(null, "Avenida Matos News", "101", "Sala 800", "Centro", "74360061", cli2, c2);
 		
 		cli1.getAddresses().addAll(Arrays.asList(a1, a2));
+		cli2.getAddresses().addAll(Arrays.asList(a3));
+
 		
-		this.clientRepository.saveAll(Arrays.asList(cli1));
-		this.addressRepository.saveAll(Arrays.asList(a1, a2));
+		this.clientRepository.saveAll(Arrays.asList(cli1, cli2));
+		this.addressRepository.saveAll(Arrays.asList(a1, a2, a3));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		

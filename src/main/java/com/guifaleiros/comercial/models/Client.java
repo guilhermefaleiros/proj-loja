@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +20,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.guifaleiros.comercial.models.enums.ETypeClient;
+import com.guifaleiros.comercial.models.enums.ETypeProfile;
 
 @Entity
 //@ClientUpdate
@@ -48,8 +51,12 @@ public class Client implements Serializable{
 	@JsonIgnore
 	private List<Request> requests = new ArrayList<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> profiles = new HashSet<>();
+	
 	public Client() {
-		
+		this.addProfile(ETypeProfile.CLIENT);
 	}
 
 	public Client(Integer id, String name, String email, String cpfOrCnpj, ETypeClient type, String password) {
@@ -60,6 +67,7 @@ public class Client implements Serializable{
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.type = (type == null) ? null : type.getCod();
 		this.password = password;
+		this.addProfile(ETypeProfile.CLIENT);
 	}
 	
 	
@@ -69,6 +77,14 @@ public class Client implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public void addProfile(ETypeProfile profile) {
+		profiles.add(profile.getCod());
+	}
+	
+	public Set<ETypeProfile> getProfiles(){
+		return profiles.stream().map(profile -> ETypeProfile.toEnum(profile)).collect(Collectors.toSet());
 	}
 
 	public Integer getId() {
